@@ -16,7 +16,11 @@
 package com.alibaba.ons.message.example.producer;
 
 import com.alibaba.ons.message.example.MqConfig;
-import com.aliyun.openservices.ons.api.*;
+import com.aliyun.openservices.ons.api.ONSFactory;
+import com.aliyun.openservices.ons.api.Producer;
+import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import com.aliyun.openservices.ons.api.SendResult;
+import com.aliyun.openservices.ons.api.Message;
 
 import java.util.Date;
 import java.util.Properties;
@@ -27,7 +31,7 @@ import java.util.Properties;
 public class SimpleMQProducer {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Properties producerProperties = new Properties();
         producerProperties.setProperty(PropertyKeyConst.ProducerId, MqConfig.PRODUCER_ID);
         producerProperties.setProperty(PropertyKeyConst.AccessKey, MqConfig.ACCESS_KEY);
@@ -37,12 +41,14 @@ public class SimpleMQProducer {
         producer.start();
         System.out.println("Producer Started");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Message message = new Message(MqConfig.TOPIC, MqConfig.TAG, "mq send transaction message test".getBytes());
             SendResult sendResult = producer.send(message);
             if (sendResult != null) {
-                System.out.println(new Date() + " Send mq message success! Topic is:" + MqConfig.TOPIC + "msgId is: " + sendResult.getMessageId());
+                System.out.println(new Date() + " Send mq message success! Topic is:" + MqConfig.TOPIC + ", msgId is: " + sendResult.getMessageId());
             }
         }
+
+        System.in.read();
     }
 }

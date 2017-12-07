@@ -17,6 +17,7 @@ import java.util.Properties;
 public class SimpleTransactionProducer {
 
     public static void main(String[] args) {
+
         Properties tranProducerProperties = new Properties();
         tranProducerProperties.setProperty(PropertyKeyConst.ProducerId, MqConfig.PRODUCER_ID);
         tranProducerProperties.setProperty(PropertyKeyConst.AccessKey, MqConfig.ACCESS_KEY);
@@ -29,8 +30,9 @@ public class SimpleTransactionProducer {
 
         Message message = new Message(MqConfig.TOPIC, MqConfig.TAG, "mq send transaction message test".getBytes());
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             SendResult sendResult = transactionProducer.send(message, new LocalTransactionExecuter() {
+                @Override
                 public TransactionStatus execute(Message msg, Object arg) {
                     System.out.println("执行本地事务, 并根据本地事务的状态提交TransactionStatus.");
                     return TransactionStatus.CommitTransaction;

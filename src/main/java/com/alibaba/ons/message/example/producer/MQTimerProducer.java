@@ -25,7 +25,9 @@ import java.util.Properties;
  * MQ发送定时消息示例 Demo
  */
 public class MQTimerProducer {
+
     public static void main(String[] args) {
+
         Properties producerProperties = new Properties();
         producerProperties.setProperty(PropertyKeyConst.ProducerId, MqConfig.PRODUCER_ID);
         producerProperties.setProperty(PropertyKeyConst.AccessKey, MqConfig.ACCESS_KEY);
@@ -35,14 +37,14 @@ public class MQTimerProducer {
         producer.start();
         System.out.println("Producer Started");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Message message = new Message(MqConfig.TOPIC, MqConfig.TAG, "mq send timer message test".getBytes());
             // 延时时间单位为毫秒（ms），指定一个时刻，在这个时刻之后才能被消费，这个例子表示 3秒 后才能被消费
             long delayTime = 3000;
             message.setStartDeliverTime(System.currentTimeMillis() + delayTime);
             SendResult sendResult = producer.send(message);
             if (sendResult != null) {
-                System.out.println(new Date() + " Send mq timer message success! Topic is:" + MqConfig.TOPIC + "msgId is: " + sendResult.getMessageId());
+                System.out.println(new Date() + " Send mq timer message success! Topic is:" + MqConfig.TOPIC + ", msgId is: " + sendResult.getMessageId());
             }
         }
     }

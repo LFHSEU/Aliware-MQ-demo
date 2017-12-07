@@ -28,11 +28,13 @@ import java.util.Properties;
 public class SimpleMQConsumer {
 
     public static void main(String[] args) {
+
         Properties consumerProperties = new Properties();
         consumerProperties.setProperty(PropertyKeyConst.ConsumerId, MqConfig.CONSUMER_ID);
         consumerProperties.setProperty(PropertyKeyConst.AccessKey, MqConfig.ACCESS_KEY);
         consumerProperties.setProperty(PropertyKeyConst.SecretKey, MqConfig.SECRET_KEY);
         consumerProperties.setProperty(PropertyKeyConst.ONSAddr, "http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet");
+
         Consumer consumer = ONSFactory.createConsumer(consumerProperties);
         consumer.subscribe(MqConfig.TOPIC, MqConfig.TAG, new MessageListenerImpl());
         consumer.start();
